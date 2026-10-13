@@ -1,6 +1,16 @@
 (() => {
   document.querySelectorAll('[data-year]').forEach(node => { node.textContent = new Date().getFullYear(); });
 
+  // Scroll explicitly because mobile browsers can treat a fragment target near
+  // the sticky header as already visible. Keep the link as a no-JS fallback.
+  document.querySelectorAll('.footer a[href="#top"]').forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, left: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  });
+
   const toggle = document.querySelector('.menu-button');
   const menu = document.querySelector('.mobile-menu');
   const desktop = matchMedia('(min-width: 681px)');
